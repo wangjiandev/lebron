@@ -1,0 +1,36 @@
+syntax = "v1"
+
+info(
+	title: "用户收藏"
+	desc: "用户收藏"
+	author: "王健"
+	email: "wangjian0504@gmail.com"
+	version: "v1"
+)
+
+// 添加收藏
+type (
+	UserCollectionAddReq {
+		ProductId int64 `json:"product_id"` // 商品id
+	}
+	UserCollectionAddRes struct{}
+)
+// 添加收藏
+
+// 删除收藏
+type (
+	UserCollectionDelReq {
+		Id int64 `json:"id"` // 收藏Id
+	}
+	UserCollectionDelRes struct{}
+)
+// 删除收藏
+
+// 收藏列表
+type (
+	UserCollectionListReq struct{}
+	UserCollectionListRes {
+		ProductId []int64 `json:"product_id"` // 商品id
+	}
+)
+// 收藏列表

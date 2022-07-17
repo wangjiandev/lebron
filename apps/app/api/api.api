@@ -1,0 +1,73 @@
+syntax = "v1"
+
+import (
+	"apis/userReceiveAddress.api"
+	"apis/user.api"
+	"apis/order.api"
+	"apis/usercollection.api"
+)
+
+//========================> user v1 <===================================
+//no need login
+@server(
+	prefix: v1/user
+	group: user
+)
+service api-api {
+	@doc "login"
+	@handler login
+	post /login (LoginReq) returns (LoginResp)
+}
+
+//need login
+@server(
+	prefix: v1/user
+	group: user
+	jwt: JwtAuth //use jwt
+)
+service api-api {
+	@doc "get user info"
+	@handler detail
+	post /info (UserInfoReq) returns (UserInfoResp)
+	
+	@doc "add user receiveAddress"
+	@handler addReceiveAddress
+	post /addReceiveAddress (UserReceiveAddressAddReq) returns (UserReceiveAddressAddRes)
+	
+	@doc "edit user receiveAddress"
+	@handler editReceiveAddress
+	post /editReceiveAddress (UserReceiveAddressEditReq) returns (UserReceiveAddressEditRes)
+	
+	@doc "del user receiveAddress list"
+	@handler delReceiveAddress
+	post /delReceiveAddress (UserReceiveAddressDelReq) returns (UserReceiveAddressDelRes)
+	
+	@doc "get user receiveAddress list"
+	@handler userReceiveAddressList
+	get /getReceiveAddressList (UserReceiveAddressListReq) returns (UserReceiveAddressListRes)
+	
+	@doc "add user collection"
+	@handler userCollectionAdd
+	post /addCollection (UserCollectionAddReq) returns (UserCollectionAddRes)
+	
+	@doc "del user collection"
+	@handler userCollectionDel
+	post /delCollection (UserCollectionDelReq) returns (UserCollectionDelRes)
+	
+	@doc "get user collection list"
+	@handler userCollectionList
+	get /getCollectionList (UserCollectionListReq) returns (UserCollectionListRes)
+}
+
+//========================> order v1 <===================================
+//need login
+@server(
+	prefix: v1/order
+	group: order
+	jwt: JwtAuth //use jwt
+)
+service api-api {
+	@doc "add order"
+	@handler addOrder
+	post /add (OrderAddReq) returns (OrderAddResp)
+}
