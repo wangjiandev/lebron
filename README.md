@@ -30,3 +30,44 @@ goctl rpc new rpc
 goctl api new admin
 ```
 
+# RPC定义
+
+因为BFF只负责数据的组装工作，数据真正的来源是各个微服务通过RPC接口提供，接下来我们来定义各个微服务的proto
+order.proto
+```protobuf
+syntax = "proto3";
+
+package order;
+option go_package="./order";
+
+
+service Order {
+  rpc Orders(OrdersRequest) returns(OrdersResponse);
+}
+
+message OrdersRequest {
+  int64 user_id = 1;
+  int32 status = 2;
+  int64 cursor = 3;
+  int32 ps = 4;
+}
+
+message OrdersResponse {
+  repeated OrderItem orders = 1;
+  bool is_end = 2;
+  string create_time = 3;
+}
+
+message OrderItem {
+  string order_id = 1;
+  int64 quantity = 2;
+  float payment = 3;
+  int64 product_id = 4;
+  int64 user_id = 5;
+  int64 create_time = 6;
+}
+```
+使用如下命令重新生成代码，注意这里需要依赖protoc-gen-go和protoc-gen-go-grpc两个插件，木有安装的话执行下面命令会报错
+```shell
+goctl rpc protoc order.proto --go_out=. --go-grpc_out=. --zrpc_out=.
+```
